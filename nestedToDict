@@ -4,7 +4,7 @@ def nested_to_dict(json):
     def flatten(to_be_flattened, col_name=''):
         if type(to_be_flattened) is dict:
             for key in to_be_flattened:
-                flatten(to_be_flattened[key], col_name + key)
+                flatten(to_be_flattened[key], col_name + key + '_')
         elif type(to_be_flattened) is list:
             counter = 0
             for key in to_be_flattened:
