@@ -28,6 +28,5 @@ launches_parsed = json.loads(r.text)
 
 newer = [nested_to_dict(index) for index in launches_parsed]
 
-#df = pd.DataFrame(newer, columns=newer[0].keys())
-#CSVwritard(launches_parsed,'parsed.csv')
-#df.to_csv('dataframe1.csv')
+#df_from_records = pd.DataFrame.from_records(newer)
+#df.to_csv('dataframe.csv')
