@@ -28,7 +28,7 @@ flat_launches_list = [nested_to_dict(index) for index in launches_parsed]
 
 ordered_flat_launches_list = [OrderedDict(dic) for dic in flat_launches_list]
 df_launches = pd.DataFrame.from_records(ordered_flat_launches_list, index='flight_number')
-df_launches.to_csv('df_final.csv')
+df_launches.to_csv('df_launches.csv') #For those interested in totally flattened JSON from the SpaceX REST service
 
 masses = pd.DataFrame(columns=['launch_year'])
 masses['launch_year'] = df_launches['launch_year']
