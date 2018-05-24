@@ -24,19 +24,16 @@ def nested_to_dict(json):
 URL = "https://api.spacexdata.com/v2/launches"
 r = requests.get(url=URL)
 launches_parsed = json.loads(r.text)
-newer = [nested_to_dict(index) for index in launches_parsed]
+flat_launches_list = [nested_to_dict(index) for index in launches_parsed]
 
-#df_from_records = pd.DataFrame.from_records(newer)
-#df.to_csv('dataframe.csv')
-fajnal = [OrderedDict(dic) for dic in newer]
-df_final = pd.DataFrame.from_records(fajnal,index='flight_number')
-df_final.to_csv('df_final.csv')
+ordered_flat_launches_list = [OrderedDict(dic) for dic in flat_launches_list]
+df_launches = pd.DataFrame.from_records(ordered_flat_launches_list, index='flight_number')
+df_launches.to_csv('df_final.csv')
 
 masses = pd.DataFrame(columns=['launch_year'])
-masses['launch_year'] = df_final['launch_year']
-masses['total_payload_mass'] = df_final['rocket_second_stage_payloads_0_payload_mass_kg'].fillna(0) + df_final['rocket_second_stage_payloads_1_payload_mass_kg'].fillna(0)
-masses['mass_returned'] = df_final['rocket_second_stage_payloads_0_mass_returned_kg'].fillna(0)
-#masses = masses[(masses.T != 0).any()]
+masses['launch_year'] = df_launches['launch_year']
+masses['total_payload_mass'] = df_launches['rocket_second_stage_payloads_0_payload_mass_kg'].fillna(0) + df_launches['rocket_second_stage_payloads_1_payload_mass_kg'].fillna(0)
+masses['mass_returned'] = df_launches['rocket_second_stage_payloads_0_mass_returned_kg'].fillna(0)
 masses.drop(masses[masses['total_payload_mass'] == 0].index, inplace=True)
 
 grouped = pd.DataFrame(columns=['count'])
