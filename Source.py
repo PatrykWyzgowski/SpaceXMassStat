@@ -36,10 +36,14 @@ masses['total_payload_mass'] = df_launches['rocket_second_stage_payloads_0_paylo
 masses['mass_returned'] = df_launches['rocket_second_stage_payloads_0_mass_returned_kg'].fillna(0)
 masses.drop(masses[masses['total_payload_mass'] == 0].index, inplace=True)
 
-grouped = pd.DataFrame(columns=['count'])
-grouped['count'] = masses.groupby('launch_year').count()['total_payload_mass']
-grouped['sum'] = masses.groupby('launch_year').sum()['total_payload_mass']
-grouped['mean'] = masses.groupby('launch_year').mean()['total_payload_mass'].round(2)
-grouped['median'] = masses.groupby('launch_year').median()['total_payload_mass']
+df_statistics = pd.DataFrame(columns=['count'])
+df_statistics['count'] = masses.groupby('launch_year').count()['total_payload_mass']
+df_statistics['sum'] = masses.groupby('launch_year').sum()['total_payload_mass']
+df_statistics['min'] = masses.groupby('launch_year').min()['total_payload_mass']
+df_statistics['median'] = masses.groupby('launch_year').median()['total_payload_mass']
+df_statistics['max'] = masses.groupby('launch_year').max()['total_payload_mass']
+df_statistics['mean'] = masses.groupby('launch_year').mean()['total_payload_mass'].round(2)
+df_statistics['std'] = masses.groupby('launch_year').std()['total_payload_mass'].fillna(0).round(2)
 
-grouped.to_csv('aggregated_data.csv')
+
+df_statistics.to_csv('statistics.csv')
