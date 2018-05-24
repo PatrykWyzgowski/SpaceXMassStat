@@ -23,9 +23,7 @@ def nested_to_dict(json):
     return flattened_to_dict
 URL = "https://api.spacexdata.com/v2/launches"
 r = requests.get(url=URL)
-##ss
 launches_parsed = json.loads(r.text)
-
 newer = [nested_to_dict(index) for index in launches_parsed]
 
 #df_from_records = pd.DataFrame.from_records(newer)
@@ -41,4 +39,10 @@ masses['mass_returned'] = df_final['rocket_second_stage_payloads_0_mass_returned
 #masses = masses[(masses.T != 0).any()]
 masses.drop(masses[masses['total_payload_mass'] == 0].index, inplace=True)
 
-print(masses)
+grouped = pd.DataFrame(columns=['count'])
+grouped['count'] = masses.groupby('launch_year').count()['total_payload_mass']
+grouped['sum'] = masses.groupby('launch_year').sum()['total_payload_mass']
+grouped['mean'] = masses.groupby('launch_year').mean()['total_payload_mass'].round(2)
+grouped['median'] = masses.groupby('launch_year').median()['total_payload_mass']
+
+grouped.to_csv('aggregated_data.csv')
