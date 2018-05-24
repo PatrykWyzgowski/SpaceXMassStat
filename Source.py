@@ -47,3 +47,13 @@ df_statistics['std'] = masses.groupby('launch_year').std()['total_payload_mass']
 
 
 df_statistics.to_csv('statistics.csv')
+
+data_for_boxplot= pd.DataFrame(columns=['year'])
+data_for_boxplot['year'] = masses['launch_year']
+data_for_boxplot['mass'] = masses['total_payload_mass']
+
+#creating a boxplot
+import seaborn as sns
+sns_plot = sns.boxplot(x='year', y='mass', data=data_for_boxplot)
+fig = sns_plot.get_figure()
+fig.savefig('boxplot.png')
