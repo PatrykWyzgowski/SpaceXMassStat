@@ -33,7 +33,6 @@ df_launches.to_csv('df_launches.csv') #For those interested in totally flattened
 masses = pd.DataFrame(columns=['launch_year'])
 masses['launch_year'] = df_launches['launch_year']
 masses['total_payload_mass'] = df_launches['rocket_second_stage_payloads_0_payload_mass_kg'].fillna(0) + df_launches['rocket_second_stage_payloads_1_payload_mass_kg'].fillna(0)
-masses['mass_returned'] = df_launches['rocket_second_stage_payloads_0_mass_returned_kg'].fillna(0)
 masses.drop(masses[masses['total_payload_mass'] == 0].index, inplace=True)
 
 df_statistics = pd.DataFrame(columns=['count'])
@@ -50,10 +49,10 @@ df_statistics.to_csv('statistics.csv')
 
 data_for_boxplot= pd.DataFrame(columns=['year'])
 data_for_boxplot['year'] = masses['launch_year']
-data_for_boxplot['mass'] = masses['total_payload_mass']
+data_for_boxplot['mass [kg]'] = masses['total_payload_mass']
 
 #creating a boxplot
 import seaborn as sns
-sns_plot = sns.boxplot(x='year', y='mass', data=data_for_boxplot)
+sns_plot = sns.boxplot(x='year', y='mass [kg]', data=data_for_boxplot)
 fig = sns_plot.get_figure()
 fig.savefig('boxplot.png')
